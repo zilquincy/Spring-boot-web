@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Struk Pembayaran</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @media print {
+        .no-print {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 px-4 py-10 text-gray-800">
+    <div
+      class="max-w-md mx-auto bg-white border border-gray-400 rounded-xl p-6 shadow"
+    >
+      <h2 class="text-xl font-bold text-center text-gray-900 mb-4">
+        Struk Pembayaran Laundry
+      </h2>
+
+      <table class="w-full text-sm">
+        <tbody class="divide-y divide-gray-200">
+          <tr>
+            <td class="py-2 font-semibold w-40">ID Pembayaran</td>
+            <td class="py-2 w-2">:</td>
+            <td th:text="${pembayaran.id}"></td>
+          </tr>
+          <tr>
+            <td class="py-2 font-semibold">ID Transaksi</td>
+            <td>:</td>
+            <td th:text="${pembayaran.transaksiId}"></td>
+          </tr>
+          <tr>
+            <td class="py-2 font-semibold">Nama Pelanggan</td>
+            <td>:</td>
+            <td th:text="${pembayaran.namaPelanggan}">Nama Pelanggan</td>
+          </tr>
+          <tr>
+            <td class="py-2 font-semibold">Berat Cucian</td>
+            <td>:</td>
+            <td th:text="${pembayaran.berat + ' kg'}"></td>
+          </tr>
+          <tr>
+            <td class="py-2 font-semibold">Nama Kasir</td>
+            <td>:</td>
+            <td th:text="${pembayaran.namaKasir}"></td>
+          </tr>
+          <tr>
+            <td class="py-2 font-semibold">Waktu Pembayaran</td>
+            <td>:</td>
+            <td th:text="${pembayaran.waktuBayarFormatted}"></td>
+          </tr>
+          <tr>
+            <td class="py-2 font-semibold">Jam Pembayaran</td>
+            <td>:</td>
+            <td th:text="${pembayaran.jamBayarFormatted}">22-05-2025 10:00</td>
+          </tr>
+          <tr>
+            <td class="py-2 font-semibold">Jumlah Bayar</td>
+            <td>:</td>
+            <td th:text="${pembayaran.totalFormatted}"></td>
+          </tr>
+          <tr>
+            <td class="py-2 font-semibold">Metode</td>
+            <td>:</td>
+            <td th:text="${pembayaran.metodePembayaran}"></td>
+          </tr>
+          <tr>
+            <td class="py-2 font-semibold">Status</td>
+            <td>:</td>
+            <td th:text="${pembayaran.status}"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="mt-6 text-center text-xs text-gray-600 border-t pt-4">
+        Terima kasih telah menggunakan layanan kami!<br />
+        <span class="font-semibold">KlinKlin Laundry &copy; 2025</span>
+      </div>
+    </div>
+
+    <div class="flex justify-center gap-4 mt-6 no-print">
+      <button
+        onclick="window.print()"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+      >
+        Print Struk
+      </button>
+      <a
+        th:href="@{/kasir/dashboard}"
+        class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
+      >
+        Keluar
+      </a>
+    </div>
+  </body>
+</html>

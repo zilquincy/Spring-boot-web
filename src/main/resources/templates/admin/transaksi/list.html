@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="admin/layout :: head"></head>
+  <body>
+    <nav th:replace="admin/layout :: navbar"></nav>
+    <aside th:replace="admin/layout :: sidebar"></aside>
+    <div class="p-4 sm:ml-64">
+      <div
+        class="p-4 border-2 border-gray-200 border-dashed rounded-lg mt-14 space-y-5"
+      >
+        <!-- HEADER + SEARCH + ADD BUTTON -->
+        <h1 class="text-3xl font-bold text-blue-600">Daftar Transaksi</h1>
+
+        <div class="flex justify-between items-center space-x-4 mb-6">
+          <form
+            class="flex items-center max-w-sm"
+            method="get"
+            action="/admin/transaksi"
+          >
+            <label for="simple-search" class="sr-only">Search</label>
+            <div class="relative w-full">
+              <div
+                class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+              ></div>
+              <input
+                type="text"
+                id="simple-search"
+                name="keyword"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-5 pe-16 p-2.5"
+                placeholder="Cari Transaksi..."
+                th:value="${keyword}"
+              />
+            </div>
+            <button
+              type="submit"
+              class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+            >
+              <svg
+                class="w-4 h-4"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+              <span class="sr-only">Search</span>
+            </button>
+          </form>
+
+          <a
+            href="/admin/transaksi/create"
+            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            Tambah Transaksi
+          </a>
+        </div>
+
+        <!-- table -->
+        <div class="overflow-x-auto bg-white shadow-md rounded-md">
+          <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <thead class="bg-blue-50 text-gray-700 text-left">
+              <tr>
+                <th class="px-6 py-3 text-center">No</th>
+                <th class="px-6 py-3">Nama Pelanggan</th>
+                <th class="px-6 py-3">Layanan</th>
+                <th class="px-6 py-3">Berat (kg)</th>
+                <th class="px-6 py-3">Total</th>
+                <th class="px-6 py-3">Status</th>
+                <th class="px-6 py-3">Tanggal</th>
+                <th class="px-6 py-3">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 bg-white">
+              <tr
+                th:each="transaksi, stat : ${transaksiList}"
+                class="hover:bg-blue-50 transition"
+              >
+                <td
+                  class="px-6 py-4 text-center"
+                  th:text="${stat.index + 1}"
+                ></td>
+                <td class="px-6 py-4" th:text="${transaksi.namaPelanggan}"></td>
+                <td class="px-6 py-4" th:text="${transaksi.layananNama}"></td>
+                <td class="px-6 py-4" th:text="${transaksi.beratKg}"></td>
+                <td
+                  class="px-6 py-4"
+                  th:text="${transaksi.totalFormatted}"
+                ></td>
+                <td class="px-6 py-4" th:text="${transaksi.status}"></td>
+                <td
+                  class="px-6 py-4"
+                  th:text="${transaksi.tanggalTransaksiFormatted}"
+                ></td>
+                <td class="px-6 py-4 space-x-2">
+                  <a
+                    th:href="@{'/admin/transaksi/' + ${transaksi.id}}"
+                    class="text-blue-600 hover:underline font-medium"
+                    >Detail</a
+                  >
+                  <a
+                    th:href="@{'/admin/transaksi/edit/' + ${transaksi.id}}"
+                    class="text-green-600 hover:underline font-medium"
+                    >Edit</a
+                  >
+                  <a
+                    th:href="@{'/admin/transaksi/delete/' + ${transaksi.id}}"
+                    class="text-red-600 hover:underline font-medium"
+                    onclick="return confirm('Yakin ingin menghapus transaksi ini?')"
+                    >Hapus</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- pagination -->
+        <div class="mt-4 flex justify-center">
+          <nav class="inline-flex space-x-2" aria-label="Pagination">
+            <!-- Previous Button -->
+            <a
+              th:href="@{/admin/transaksi(page=${currentPage - 1})}"
+              th:classappend="${currentPage == 0} ? 'pointer-events-none opacity-50' : ''"
+              class="relative inline-flex items-center px-3 py-1 text-md font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+            >
+              Previous
+            </a>
+
+            <!-- Numbered Page Buttons -->
+            <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+              <a
+                th:href="@{/admin/transaksi(page=${i})}"
+                th:classappend="${i == currentPage} ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
+                class="relative inline-flex items-center px-3 py-1 rounded-lg border border-gray-300 text-md font-medium"
+              >
+                <span th:text="${i + 1}">1</span>
+              </a>
+            </th:block>
+
+            <!-- Next Button -->
+            <a
+              th:href="@{/admin/transaksi(page=${currentPage + 1})}"
+              th:classappend="${currentPage == totalPages - 1} ? 'pointer-events-none opacity-50' : ''"
+              class="relative inline-flex items-center px-3 py-1 text-md font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+            >
+              Next
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <script th:replace="admin/layout :: scripts"></script>
+  </body>
+</html>

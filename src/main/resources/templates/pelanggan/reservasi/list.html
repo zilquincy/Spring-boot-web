@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Reservasi - KlinKlin Laundry</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <style>
+      .status-menunggu {
+        background-color: #fef3c7;
+        color: #92400e;
+      }
+
+      .status-dijemput {
+        background-color: #dbeafe;
+        color: #1e40af;
+      }
+
+      .status-diproses {
+        background-color: #e0e7ff;
+        color: #3730a3;
+      }
+
+      .status-selesai {
+        background-color: #d1fae5;
+        color: #065f46;
+      }
+
+      .status-dibatalkan {
+        background-color: #fee2e2;
+        color: #991b1b;
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-blue-50 to-white relative overflow-x-hidden"
+  >
+    <!-- Main Content -->
+    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Page Header -->
+      <div class="mb-4">
+        <div class="flex justify-between items-center mb-3">
+          <div>
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">
+              Daftar Reservasi
+            </h2>
+          </div>
+          <a
+            th:href="@{/pelanggan/reservasi/create}"
+            class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:shadow-lg transition-all duration-200 card-hover"
+          >
+            Buat Reservasi
+          </a>
+        </div>
+      </div>
+
+      <!-- Reservasi Table -->
+      <div
+        class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-blue-100 overflow-hidden"
+      >
+        <div class="p-6 border-b border-gray-100">
+          <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+            Data Reservasi
+          </h3>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  ID Reservasi
+                </th>
+                <th
+                  class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Nama Pelanggan
+                </th>
+                <th
+                  class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Tanggal Reservasi
+                </th>
+                <th
+                  class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Layanan
+                </th>
+                <th
+                  class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Status
+                </th>
+                <th
+                  class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Aksi
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr
+                th:each="reservasi : ${reservasiList}"
+                class="hover:bg-gray-50 transition-colors duration-200"
+              >
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="text-sm font-medium text-gray-900"
+                    th:text="${reservasi.id}"
+                    >ID Reservasi</span
+                  >
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <span
+                      class="text-sm font-medium text-gray-900"
+                      th:text="${reservasi.nama}"
+                      >Nama Pelanggan</span
+                    >
+                  </div>
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                  th:text="${reservasi.tanggalReservasiFormatted}"
+                >
+                  Tanggal
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                  th:text="${reservasi.namaLayanan}"
+                >
+                  Layanan
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex px-3 py-1 text-xs font-semibold rounded-full"
+                    th:classappend="${#strings.toLowerCase(reservasi.status) == 'selesai' ? 'status-selesai' : 
+                                                     (#strings.toLowerCase(reservasi.status) == 'menunggu' ? 'status-menunggu' : 
+                                                     (#strings.toLowerCase(reservasi.status) == 'dijemput' ? 'status-dijemput' : 
+                                                     (#strings.toLowerCase(reservasi.status) == 'diproses' ? 'status-diproses' : 'status-dibatalkan')))}"
+                    th:text="${reservasi.status}"
+                    >Status</span
+                  >
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  <!-- Action Buttons -->
+                  <div class="flex flex-col">
+                    <!-- Detail Button -->
+                    <a
+                      th:href="@{'/pelanggan/reservasi/detail/' + ${reservasi.id}}"
+                      class="text-blue-600 hover:text-blue-800"
+                    >
+                      Detail
+                    </a>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Empty State -->
+              <tr th:if="${#lists.isEmpty(reservasiList)}">
+                <td colspan="6" class="px-6 py-12 text-center">
+                  <div class="flex flex-col items-center">
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">
+                      Belum ada reservasi
+                    </h3>
+                    <p class="text-gray-500 mb-4">
+                      Mulai dengan membuat reservasi baru untuk pelanggan
+                    </p>
+                    <a
+                      th:href="@{/pelanggan/reservasi/create}"
+                      class="btn-primary text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
+                    >
+                      Buat Reservasi Pertama
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer
+      class="relative z-10 mt-12 bg-white/90 backdrop-blur-sm border-t border-blue-100"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="text-center text-gray-600">
+          <p>&copy; 2024 KlinKlin Laundry. Semua hak cipta dilindungi.</p>
+          <p class="text-sm mt-1">Sistem Manajemen Reservasi Laundry</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

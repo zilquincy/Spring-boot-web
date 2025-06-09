@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-white text-gray-800">
+  <head th:replace="kasir/layout :: head"></head>
+  <body>
+    <nav th:replace="kasir/layout :: navbar"></nav>
+    <aside th:replace="kasir/layout :: sidebar"></aside>
+    <div class="p-4 sm:ml-64">
+      <div
+        class="p-4 border-2 border-gray-200 border-dashed rounded-lg mt-5 space-y-5"
+      >
+        <h1 class="text-3xl font-bold text-blue-600">List Layanan</h1>
+
+        <!-- Form Search + Tambah -->
+        <div class="flex justify-between items-center space-x-4">
+          <form
+            class="flex items-center max-w-sm"
+            method="get"
+            action="/kasir/layanan"
+          >
+            <label for="layanan-search" class="sr-only">Search</label>
+            <div class="relative w-full">
+              <input
+                type="text"
+                id="layanan-search"
+                name="keyword"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-5 pe-16 p-2.5"
+                placeholder="Cari Layanan..."
+                th:value="${keyword}"
+              />
+            </div>
+            <button
+              type="submit"
+              class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 20 20">
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto bg-white shadow-md rounded-md">
+          <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
+            <thead class="bg-blue-50 text-base font-semibold">
+              <tr>
+                <th class="px-6 py-4">No</th>
+                <th class="px-6 py-4">Nama Layanan</th>
+                <th class="px-6 py-4">Harga/Kg</th>
+              </tr>
+            </thead>
+            <tbody
+              class="divide-y divide-gray-200"
+              th:each="layanan, stat : ${layananPage.content}"
+            >
+              <tr class="hover:bg-blue-50 transition">
+                <td
+                  class="px-6 py-4"
+                  th:text="${stat.index + 1 + (currentPage * 5)}"
+                >
+                  1
+                </td>
+                <td class="px-6 py-4" th:text="${layanan.namaLayanan}">
+                  Cuci Kering
+                </td>
+                <td class="px-6 py-4" th:text="'Rp' + ${layanan.hargaPerKg}">
+                  Rp10000
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-4 flex justify-center">
+          <nav class="inline-flex space-x-2" aria-label="Pagination">
+            <!-- Previous -->
+            <a
+              th:href="@{/kasir/layanan(page=${currentPage - 1}, keyword=${keyword})}"
+              th:classappend="${currentPage == 0} ? 'pointer-events-none opacity-50' : ''"
+              class="relative inline-flex items-center px-3 py-1 text-md font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+            >
+              Previous
+            </a>
+
+            <!-- Nomor halaman -->
+            <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+              <a
+                th:href="@{/kasir/layanan(page=${i}, keyword=${keyword})}"
+                th:classappend="${i == currentPage} ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
+                class="relative inline-flex items-center px-3 py-1 rounded-lg border border-gray-300 text-md font-medium"
+              >
+                <span th:text="${i + 1}">1</span>
+              </a>
+            </th:block>
+
+            <!-- Next -->
+            <a
+              th:href="@{/kasir/layanan(page=${currentPage + 1}, keyword=${keyword})}"
+              th:classappend="${currentPage == totalPages - 1} ? 'pointer-events-none opacity-50' : ''"
+              class="relative inline-flex items-center px-3 py-1 text-md font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+            >
+              Next
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <script th:replace="kasir/layout :: scripts"></script>
+  </body>
+</html>

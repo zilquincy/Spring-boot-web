@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Pembayaran - KlinKlin Laundry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-blue-50 to-white relative overflow-x-hidden">
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+              <span class="text-white text-lg font-bold">K</span>
+            </div>
+            <div>
+              <h1 class="text-xl font-bold text-gray-800">KlinKlin Laundry</h1>
+              <p class="text-sm text-gray-600">Detail Pembayaran</p>
+            </div>
+          </div>
+          <div class="flex space-x-2">
+            <a th:href="@{/pelanggan/transaksi}" class="text-sm bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition"> Kembali </a>
+            <a th:href="@{'/pelanggan/pembayaran/' + ${pembayaran.id} + '/struk'}" class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"> Cetak Struk </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-10">
+      <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-blue-100 p-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Detail Pembayaran</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm text-gray-700">
+          <div>
+            <p class="font-semibold">ID Pembayaran:</p>
+            <p th:text="${pembayaran.id}">123</p>
+          </div>
+          <div>
+            <p class="font-semibold">ID Transaksi:</p>
+            <p th:text="${pembayaran.transaksiId}">TRX123</p>
+          </div>
+          <div>
+            <p class="font-semibold">Nama Pelanggan:</p>
+            <p th:text="${pembayaran.namaPelanggan}">Nama Pelanggan</p>
+          </div>
+          <div>
+            <p class="font-semibold">Berat Cucian:</p>
+            <p th:text="${pembayaran.berat + ' kg'}">5 kg</p>
+          </div>
+          <div>
+            <p class="font-semibold">Nama Kasir:</p>
+            <p th:text="${pembayaran.namaKasir}">Nama Kasir</p>
+          </div>
+          <div>
+            <p class="font-semibold">Waktu Pembayaran:</p>
+            <p>
+              <span th:text="${pembayaran.waktuBayarFormatted}">22-05-2025</span><br />
+              <span th:text="${pembayaran.jamBayarFormatted}">10:00</span>
+            </p>
+          </div>
+          <div>
+            <p class="font-semibold">Jumlah Bayar:</p>
+            <p th:text="${pembayaran.totalFormatted}">Rp 50.000</p>
+          </div>
+          <div>
+            <p class="font-semibold">Metode Pembayaran:</p>
+            <p th:text="${pembayaran.metodePembayaran}">Cash</p>
+          </div>
+          <div>
+            <p class="font-semibold">Status:</p>
+            <span
+              class="inline-flex px-3 py-1 text-xs font-semibold rounded-full"
+              th:classappend="${#strings.toLowerCase(pembayaran.status) == 'lunas' ? 'status-lunas' : 
+                                               (#strings.toLowerCase(pembayaran.status) == 'pending' ? 'status-pending' : 
+                                               (#strings.toLowerCase(pembayaran.status) == 'gagal' ? 'status-gagal' : 'status-dibatalkan'))}"
+              th:text="${pembayaran.status}"
+            >
+              Status
+            </span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Status Styles -->
+    <style>
+      .status-pending {
+        background-color: #fef3c7;
+        color: #92400e;
+      }
+      .status-lunas {
+        background-color: #d1fae5;
+        color: #065f46;
+      }
+      .status-gagal {
+        background-color: #fee2e2;
+        color: #991b1b;
+      }
+      .status-dibatalkan {
+        background-color: #fee2e2;
+        color: #991b1b;
+      }
+    </style>
+  </body>
+</html>

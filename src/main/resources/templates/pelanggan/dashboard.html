@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Pelanggan - KlinKlin Laundry</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <style>
+      .status-pending {
+        background-color: #fef3c7;
+        color: #92400e;
+      }
+
+      .status-completed {
+        background-color: #d1fae5;
+        color: #065f46;
+      }
+
+      .status-processing {
+        background-color: #dbeafe;
+        color: #1e40af;
+      }
+
+      .status-cancelled {
+        background-color: #fee2e2;
+        color: #991b1b;
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-blue-50 to-white relative overflow-x-hidden"
+  >
+    <!-- Floating Bubbles -->
+    <div
+      class="bubble bubble-1 bg-gradient-to-r from-blue-200 to-blue-300"
+    ></div>
+    <div
+      class="bubble bubble-2 bg-gradient-to-r from-blue-300 to-blue-400"
+    ></div>
+    <div
+      class="bubble bubble-3 bg-gradient-to-r from-blue-200 to-blue-300"
+    ></div>
+    <div
+      class="bubble bubble-4 bg-gradient-to-r from-blue-300 to-blue-400"
+    ></div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Welcome Section -->
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">
+          Halo, <span th:text="${user.fullName}">Nama User</span>!
+        </h2>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <!-- Total Transaksi Card -->
+        <div
+          class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-blue-100 card-hover transition-all duration-300"
+        >
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600 mb-1">
+                Total Transaksi
+              </p>
+              <p
+                class="text-3xl font-bold text-blue-600"
+                th:text="${totalTransaksi}"
+              >
+                0
+              </p>
+              <p class="text-sm text-gray-500 mt-1">Transaksi dilakukan</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Pembayaran Card -->
+        <div
+          class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-blue-100 card-hover transition-all duration-300"
+        >
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600 mb-1">
+                Total Pembayaran
+              </p>
+              <p class="text-3xl font-bold text-green-600">
+                Rp
+                <span
+                  th:text="${#numbers.formatDecimal(totalPembayaran, 0, 'COMMA', 0, 'POINT')}"
+                  >0</span
+                >
+              </p>
+              <p class="text-sm text-gray-500 mt-1">Sudah dibayarkan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="my-8 text-center">
+        <div
+          class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-blue-100"
+        >
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Aksi Cepat</h3>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a
+              href="/pelanggan/reservasi/list"
+              class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-200 card-hover"
+              >Buat Reservasi</a
+            >
+            <a
+              href="/pelanggan/layanan"
+              class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-200 card-hover"
+              >Daftar Layanan</a
+            >
+            <a
+              href="/pelanggan/transaksi"
+              class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-200 card-hover"
+              >Daftar Transaksi</a
+            >
+            <a
+              href="/pelanggan/pembayaran"
+              class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-200 card-hover"
+              >Pembayaran</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Transactions Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Daftar Transaksi -->
+        <div
+          class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-blue-100"
+        >
+          <div class="p-6 border-b border-gray-100">
+            <h3 class="text-xl font-bold text-gray-800 flex items-center">
+              Daftar Transaksi
+            </h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    ID
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Total
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Status
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Tanggal
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr
+                  th:each="trx : ${transaksiList}"
+                  class="hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span
+                      class="text-sm font-medium text-gray-900"
+                      th:text="${trx.id}"
+                      >trx-id</span
+                    >
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="text-sm font-semibold text-gray-900">
+                      Rp
+                      <span
+                        th:text="${#numbers.formatDecimal(trx.total, 0, 'COMMA', 0, 'POINT')}"
+                        >0</span
+                      >
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span
+                      class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                      th:classappend="${trx.status == 'completed' ? 'status-completed' : (trx.status == 'pending' ? 'status-pending' : (trx.status == 'processing' ? 'status-processing' : 'status-cancelled'))}"
+                      th:text="${trx.status}"
+                      >Status</span
+                    >
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                    th:text="${trx.tanggalTransaksiFormatted}"
+                  >
+                    tanggal
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Daftar Pembayaran -->
+        <div
+          class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-blue-100"
+        >
+          <div class="p-6 border-b border-gray-100">
+            <h3 class="text-xl font-bold text-gray-800 flex items-center">
+              Daftar Pembayaran
+            </h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    ID
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Jumlah
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Status
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Waktu Bayar
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <tr
+                  th:each="pby : ${pembayaranList}"
+                  class="hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span
+                      class="text-sm font-medium text-gray-900"
+                      th:text="${pby.id}"
+                      >pby-id</span
+                    >
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="text-sm font-semibold text-green-600">
+                      Rp
+                      <span
+                        th:text="${#numbers.formatDecimal(pby.jumlah, 0, 'COMMA', 0, 'POINT')}"
+                        >0</span
+                      >
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span
+                      class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                      th:classappend="${pby.status == 'paid' ? 'status-completed' : (pby.status == 'pending' ? 'status-pending' : 'status-cancelled')}"
+                      th:text="${pby.status}"
+                      >Status</span
+                    >
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                    th:text="${pby.waktuBayarFormatted}"
+                  >
+                    waktu bayar
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer
+      class="relative z-10 mt-12 bg-white/90 backdrop-blur-sm border-t border-blue-100"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="text-center text-gray-600">
+          <p>&copy; 2024 KlinKlin Laundry. Semua hak cipta dilindungi.</p>
+          <p class="text-sm mt-1">
+            Layanan laundry terpercaya untuk kebutuhan Anda
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

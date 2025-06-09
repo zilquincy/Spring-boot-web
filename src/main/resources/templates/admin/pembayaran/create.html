@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  class="bg-white text-gray-800"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tambah Pembayaran</title>
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen px-6 py-10 bg-gradient-to-b from-white to-blue-50">
+    <div class="max-w-xl mx-auto bg-white shadow-md rounded-xl p-8">
+      <h1 class="text-2xl font-bold text-blue-600 mb-6">Tambah Pembayaran</h1>
+
+      <form
+        th:action="@{/admin/pembayaran/save}"
+        th:object="${pembayaranDTO}"
+        method="post"
+        class="space-y-6"
+      >
+        <!-- Transaksi ID -->
+        <div>
+          <label class="block font-medium mb-1">ID Transaksi</label>
+          <select
+            th:field="*{transaksiId}"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="" disabled selected>Pilih Transaksi</option>
+            <option
+              th:each="trx : ${listTransaksi}"
+              th:value="${trx.id}"
+              th:text="|${trx.id} - ${trx.namaPelanggan}|"
+            ></option>
+          </select>
+          <p
+            th:if="${#fields.hasErrors('transaksiId')}"
+            th:errors="*{transaksiId}"
+            class="text-red-600 text-sm mt-1"
+          ></p>
+        </div>
+
+        <!-- Jumlah Bayar -->
+        <div>
+          <label class="block font-medium mb-1">Jumlah Bayar</label>
+          <input
+            type="number"
+            step="0.01"
+            th:field="*{jumlah}"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <p
+            th:if="${#fields.hasErrors('jumlah')}"
+            th:errors="*{jumlah}"
+            class="text-red-600 text-sm mt-1"
+          ></p>
+        </div>
+
+        <!-- Metode Pembayaran -->
+        <div>
+          <label class="block font-medium mb-1">Metode Pembayaran</label>
+          <select
+            th:field="*{metodePembayaran}"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="" disabled selected>Pilih Metode</option>
+            <option
+              th:each="metode : ${metodePembayaranOptions}"
+              th:value="${metode}"
+              th:text="${metode}"
+            ></option>
+          </select>
+        </div>
+
+        <!-- Tombol Simpan -->
+        <div class="flex items-center justify-between">
+          <button
+            type="submit"
+            class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
+          >
+            Simpan
+          </button>
+          <a
+            href="/admin/pembayaran"
+            class="text-blue-600 hover:underline text-sm"
+            >Kembali ke daftar pembayaran</a
+          >
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

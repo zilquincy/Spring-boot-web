@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Buat Reservasi Baru - Admin</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-b from-white to-blue-50 px-6 py-10 text-gray-800"
+  >
+    <div class="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-8">
+      <h1 class="text-2xl font-bold text-blue-600 mb-6">
+        Buat Transaksi dari Reservasi
+      </h1>
+
+      <form
+        th:action="@{/admin/transaksi/save-from-reservasi}"
+        th:object="${transaksiDTO}"
+        method="post"
+        class="space-y-6"
+      >
+        <input type="hidden" th:field="*{reservasiId}" />
+        <input type="hidden" th:field="*{pelangganId}" />
+        <input type="hidden" th:field="*{layananId}" />
+
+        <div>
+          <label class="block font-medium mb-1">Nama Pelanggan</label>
+          <input
+            type="text"
+            th:field="*{namaPelanggan}"
+            readonly
+            class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 text-gray-700"
+          />
+        </div>
+
+        <div>
+          <label class="block font-medium mb-1">Layanan</label>
+          <select
+            disabled
+            class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 text-gray-700"
+          >
+            <option
+              th:each="layanan : ${layananList}"
+              th:value="${layanan.id}"
+              th:selected="${layanan.id == transaksiDTO.layananId}"
+              th:text="${layanan.namaLayanan}"
+            ></option>
+          </select>
+        </div>
+
+        <div>
+          <label for="kasirId" class="block font-medium mb-1">Kasir</label>
+          <select
+            th:field="*{kasirId}"
+            id="kasirId"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option
+              th:each="kasir : ${kasirList}"
+              th:value="${kasir.id}"
+              th:text="${kasir.fullName}"
+            ></option>
+          </select>
+        </div>
+
+        <div>
+          <label for="beratKg" class="block font-medium mb-1">Berat (kg)</label>
+          <input
+            type="number"
+            step="0.01"
+            th:field="*{beratKg}"
+            id="beratKg"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
+        <div class="pt-4">
+          <button
+            type="submit"
+            class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition"
+          >
+            Simpan
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

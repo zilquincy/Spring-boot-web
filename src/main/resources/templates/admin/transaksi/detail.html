@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Detail Transaksi</title>
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-b from-white to-blue-50 px-6 py-10 text-gray-800"
+  >
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
+      <h1 class="text-2xl font-bold text-blue-700 mb-6">Detail Transaksi</h1>
+
+      <div class="space-y-4 text-gray-700">
+        <p><strong>ID:</strong> <span th:text="${transaksi.id}"></span></p>
+        <p>
+          <strong>Nama Pelanggan:</strong>
+          <span th:text="${transaksi.namaPelanggan}"></span>
+        </p>
+        <p>
+          <strong>Layanan:</strong>
+          <span th:text="${transaksi.layananNama}"></span>
+        </p>
+        <p>
+          <strong>Kasir:</strong>
+          <span th:text="${transaksi.kasirNama}"></span>
+        </p>
+        <p>
+          <strong>Berat:</strong>
+          <span th:text="${transaksi.beratKg}"></span> kg
+        </p>
+        <p>
+          <strong>Total:</strong>
+          <span th:text="${transaksi.totalFormatted}"></span>
+        </p>
+        <p>
+          <strong>Status:</strong>
+          <span th:text="${transaksi.status}"></span>
+        </p>
+        <p>
+          <strong>Tanggal:</strong>
+          <span th:text="${transaksi.tanggalTransaksiFormatted}"></span>
+        </p>
+      </div>
+
+      <div class="mt-6">
+        <a
+          href="/admin/transaksi"
+          class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          Kembali
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

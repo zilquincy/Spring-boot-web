@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Buat Reservasi Baru - kasir</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="min-h-screen bg-gradient-to-b from-white to-blue-50 px-6 py-10 text-gray-800">
+    <div class="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-8">
+      <h1 class="text-2xl font-bold text-blue-600 mb-6">Buat Reservasi Baru</h1>
+
+      <form th:action="@{/kasir/reservasi/save}" th:object="${reservasiDTO}" method="post" class="space-y-6">
+        <div>
+          <label for="userId" class="block font-medium mb-1">Pelanggan:</label>
+          <select th:field="*{userId}" id="userId" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <option value="" disabled selected>Pilih Pelanggan</option>
+            <option th:each="p : ${pelangganList}" th:value="${p.id}" th:text="${p.fullName}"></option>
+          </select>
+        </div>
+
+        <div>
+          <label for="layananId" class="block font-medium mb-1">Layanan:</label>
+          <select th:field="*{layananId}" id="layananId" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <option value="" disabled selected>Pilih Layanan</option>
+            <option th:each="l : ${layananList}" th:value="${l.id}" th:text="${l.namaLayanan} + ' - Rp ' + ${#numbers.formatDecimal(l.hargaPerKg, 0, 'COMMA', 2, 'POINT')} + ' /kg'"></option>
+          </select>
+        </div>
+
+        <div>
+          <label for="alamatPenjemputan" class="block font-medium mb-1">Alamat Penjemputan:</label>
+          <input type="text" th:field="*{alamatPenjemputan}" id="alamatPenjemputan" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        </div>
+
+        <div>
+          <label for="waktuPenjemputan" class="block font-medium mb-1">Waktu Penjemputan:</label>
+          <input type="datetime-local" th:field="*{waktuPenjemputan}" id="waktuPenjemputan" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        </div>
+
+        <div>
+          <label for="catatan" class="block font-medium mb-1">Catatan:</label>
+          <textarea th:field="*{catatan}" id="catatan" rows="3" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition">Simpan Reservasi</button>
+          <a href="/kasir/reservasi/list" class="text-blue-600 hover:underline"> Batal </a>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

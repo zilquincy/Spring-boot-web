@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Tambah Pengguna</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50 px-6 py-10 text-gray-800">
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow">
+      <h1
+        class="text-2xl font-semibold text-blue-600 mb-6"
+        th:text="${user.id == null ? 'Tambah' : 'Edit'} + ' Pengguna'"
+      ></h1>
+
+      <form
+        th:action="@{/admin/users/save}"
+        th:object="${user}"
+        method="post"
+        class="space-y-4"
+      >
+        <div>
+          <label class="block text-sm font-medium">Nama Lengkap</label>
+          <input
+            type="text"
+            th:field="*{fullName}"
+            class="w-full border rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Username</label>
+          <input
+            type="text"
+            th:field="*{username}"
+            class="w-full border rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Email</label>
+          <input
+            type="email"
+            th:field="*{email}"
+            class="w-full border rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Password</label>
+          <input
+            type="password"
+            th:field="*{password}"
+            class="w-full border rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Role</label>
+          <select
+            th:field="*{role}"
+            class="w-full border rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+          >
+            <option th:value="ADMIN">ADMIN</option>
+            <option th:value="KASIR">KASIR</option>
+            <option th:value="PELANGGAN">PELANGGAN</option>
+          </select>
+        </div>
+
+        <div class="pt-4">
+          <button
+            type="submit"
+            class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+          >
+            Simpan
+          </button>
+          <a
+            th:href="@{/admin/users}"
+            class="ml-4 text-gray-600 hover:underline"
+          >
+            Batal
+          </a>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

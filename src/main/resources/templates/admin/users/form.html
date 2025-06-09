@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Form Pengguna</title>
+  </head>
+  <body>
+    <h1 th:text="${user.id == null ? 'Tambah' : 'Edit'} + ' Pengguna'"></h1>
+    <form th:action="@{/admin/users/save}" th:object="${user}" method="post">
+      <!-- <input type="hidden" th:field="*{id}" /> -->
+
+      <label>Nama Lengkap:</label>
+      <input type="text" th:field="*{fullName}" /><br />
+
+      <label>Username:</label>
+      <input type="text" th:field="*{username}" /><br />
+
+      <label>Email:</label>
+      <input type="email" th:field="*{email}" /><br />
+
+      <label>Password:</label>
+      <input type="password" th:field="*{password}" /><br />
+
+      <label>Role:</label>
+      <select th:field="*{role}">
+        <option th:value="ADMIN">ADMIN</option>
+        <option th:value="KASIR">KASIR</option>
+        <option th:value="PELANGGAN">PELANGGAN</option></select
+      ><br />
+
+      <button type="submit">Simpan</button>
+    </form>
+  </body>
+</html>

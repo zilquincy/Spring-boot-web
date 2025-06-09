@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  class="bg-white text-gray-800"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Edit Layanan - KlinKlin</title>
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="min-h-screen flex flex-col items-center px-4 py-10 bg-gradient-to-b from-white to-blue-50"
+  >
+    <h2 class="text-3xl font-bold text-blue-600 mb-6">Edit Layanan</h2>
+
+    <form
+      th:action="@{/admin/layanan/update}"
+      th:object="${layananDTO}"
+      method="post"
+      class="w-full max-w-lg bg-white p-8 rounded-2xl shadow-xl space-y-6"
+    >
+      <input type="hidden" th:field="*{id}" />
+
+      <!-- Nama Layanan -->
+      <div>
+        <label for="namaLayanan" class="block text-sm font-medium text-gray-700"
+          >Nama Layanan</label
+        >
+        <input
+          type="text"
+          id="namaLayanan"
+          th:field="*{namaLayanan}"
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        />
+        <p
+          th:if="${#fields.hasErrors('namaLayanan')}"
+          th:errors="*{namaLayanan}"
+          class="text-red-500 text-sm mt-1"
+        ></p>
+      </div>
+
+      <!-- Harga Per Kg -->
+      <div>
+        <label for="hargaPerKg" class="block text-sm font-medium text-gray-700"
+          >Harga Per Kg</label
+        >
+        <input
+          type="number"
+          id="hargaPerKg"
+          step="0.01"
+          th:field="*{hargaPerKg}"
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        />
+        <p
+          th:if="${#fields.hasErrors('hargaPerKg')}"
+          th:errors="*{hargaPerKg}"
+          class="text-red-500 text-sm mt-1"
+        ></p>
+      </div>
+
+      <!-- Tombol -->
+      <div class="flex justify-end">
+        <button
+          type="submit"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-full shadow-md transition"
+        >
+          Update
+        </button>
+      </div>
+    </form>
+  </body>
+</html>

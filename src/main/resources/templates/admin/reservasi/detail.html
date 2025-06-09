@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Detail Reservasi (Admin)</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/style/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-b from-white to-blue-50 px-6 py-10 text-gray-800"
+  >
+    <div class="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-8 space-y-6">
+      <h1 class="text-2xl font-bold text-blue-600">Detail Reservasi (Admin)</h1>
+
+      <div class="space-y-4">
+        <div>
+          <p>
+            <span class="font-semibold">ID Reservasi:</span>
+            <span th:text="${reservasi.id}"></span>
+          </p>
+          <p>
+            <span class="font-semibold">Nama Pelanggan:</span>
+            <span th:text="${reservasi.nama}"></span>
+          </p>
+          <p>
+            <span class="font-semibold">Alamat Penjemputan:</span>
+            <span th:text="${reservasi.alamatPenjemputan}"></span>
+          </p>
+          <p>
+            <span class="font-semibold">Tanggal Penjemputan:</span>
+            <span th:text="${reservasi.tanggalReservasiFormatted}"></span>
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-blue-500 mb-2">
+            Detail Layanan
+          </h2>
+          <p>
+            <span class="font-semibold">Nama Layanan:</span>
+            <span th:text="${reservasi.namaLayanan}"></span>
+          </p>
+          <p>
+            <span class="font-semibold">Harga Layanan:</span> Rp
+            <span th:text="${reservasi.hargaPerKg}"></span> /Kg
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-blue-500 mb-2">
+            Status Reservasi
+          </h2>
+          <p class="text-gray-700" th:text="${reservasi.status}"></p>
+        </div>
+
+        <div>
+          <p>
+            <span class="font-semibold">Catatan Tambahan:</span>
+            <span th:text="${reservasi.catatan}"></span>
+          </p>
+        </div>
+
+        <div class="pt-4">
+          <a
+            th:href="@{/admin/reservasi/list}"
+            class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          >
+            Kembali ke Daftar Reservasi
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

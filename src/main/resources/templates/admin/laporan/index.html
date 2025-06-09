@@ -1,0 +1,36 @@
+<!-- templates/admin/laporan/index.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Laporan Transaksi</title>
+  </head>
+  <body>
+    <h2>Laporan Transaksi Laundry</h2>
+
+    <form th:action="@{/admin/laporan}" method="get">
+      <label>Mulai:</label>
+      <input type="date" name="startDate" required />
+      <label>Sampai:</label>
+      <input type="date" name="endDate" required />
+      <button type="submit">Tampilkan</button>
+    </form>
+
+    <div th:if="${laporanList != null}">
+      <h3>Hasil Laporan</h3>
+      <table border="1">
+        <tr>
+          <th>Tanggal</th>
+          <th>Pelanggan</th>
+          <th>Total</th>
+          <th>Status</th>
+        </tr>
+        <tr th:each="laporan : ${laporanList}">
+          <td th:text="${laporan.tanggal}">2025-05-22</td>
+          <td th:text="${laporan.namaPelanggan}">Riza</td>
+          <td th:text="${laporan.total}">50000</td>
+          <td th:text="${laporan.status}">Selesai</td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

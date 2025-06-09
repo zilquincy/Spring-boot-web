@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="kasir/layout :: head"></head>
+  <body class="bg-gray-50 text-gray-800">
+    <!-- Navbar dan Sidebar -->
+    <nav th:replace="kasir/layout :: navbar"></nav>
+    <aside th:replace="kasir/layout :: sidebar"></aside>
+
+    <!-- Konten Utama -->
+    <div class="p-6 sm:ml-64">
+      <div class="mt-5">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-3xl font-bold">Dashboard Kasir</h2>
+        </div>
+
+        <!-- Statistik Cards -->
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-10"
+        >
+          <div class="bg-blue-500 text-white rounded-xl shadow p-4">
+            <div class="font-semibold text-sm">Transaksi Hari Ini</div>
+            <div
+              class="text-2xl font-bold mt-2"
+              th:text="${jumlahTransaksi} ?: 0"
+            >
+              0
+            </div>
+          </div>
+          <div class="bg-green-500 text-white rounded-xl shadow p-4">
+            <div class="font-semibold text-sm">Pemasukan Hari Ini</div>
+            <div
+              class="text-2xl font-bold mt-2"
+              th:text="${totalPemasukan != null ? 'Rp ' + totalPemasukan : 'Rp 0'}"
+            >
+              Rp 0
+            </div>
+          </div>
+          <div class="bg-yellow-400 text-white rounded-xl shadow p-4">
+            <div class="font-semibold text-sm">Menunggu</div>
+            <div class="text-2xl font-bold mt-2" th:text="${menunggu} ?: 0">
+              0
+            </div>
+          </div>
+          <div class="bg-cyan-500 text-white rounded-xl shadow p-4">
+            <div class="font-semibold text-sm">Diproses</div>
+            <div class="text-2xl font-bold mt-2" th:text="${proses} ?: 0">
+              0
+            </div>
+          </div>
+          <div class="bg-emerald-500 text-white rounded-xl shadow p-4">
+            <div class="font-semibold text-sm">Selesai</div>
+            <div class="text-2xl font-bold mt-2" th:text="${selesai} ?: 0">
+              0
+            </div>
+          </div>
+        </div>
+
+        <!-- Tombol Aksi Cepat -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
+          <a
+            href="/kasir/transaksi"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center space-x-2 shadow transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 10h4l3-6 4 12h4l3-6"
+              />
+            </svg>
+            <span>Transaksi</span>
+          </a>
+
+          <a
+            href="/kasir/pembayaran"
+            class="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center space-x-2 shadow transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+
+            <span>Pembayaran</span>
+          </a>
+
+          <a
+            href="/kasir/reservasi/list"
+            class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center space-x-2 shadow transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3M16 7V3M4 11h16M4 19h16M4 15h16"
+              />
+            </svg>
+            <span>Reservasi</span>
+          </a>
+
+          <a
+            href="/kasir/transaksi/create"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center space-x-2 shadow transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            <span>Tambah Transaksi</span>
+          </a>
+        </div>
+
+        <div class="bg-white p-5 rounded-3xl my-5">
+          <div id="pemasukanChart" class="mt-5"></div>
+        </div>
+
+        <!-- Filter dan Tabel Transaksi -->
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="text-xl font-semibold">Transaksi Terbaru</h4>
+          <div>
+            <label
+              for="statusFilter"
+              class="mr-2 text-sm font-medium text-gray-700"
+              >Filter Status:</label
+            >
+            <select
+              id="statusFilter"
+              class="border border-gray-300 rounded px-3 py-1 text-sm"
+            >
+              <option value="">Semua</option>
+              <option value="DITERIMA">Diterima</option>
+              <option value="DICUCI">Dicuci</option>
+              <option value="SELESAI">Selesai</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto bg-white rounded-xl shadow">
+          <table
+            class="min-w-full divide-y divide-gray-200 text-sm"
+            id="transaksiTable"
+          >
+            <thead class="bg-blue-50 text-gray-700 uppercase text-xs">
+              <tr>
+                <th class="px-6 py-3">#</th>
+                <th class="px-6 py-3">Pelanggan</th>
+                <th class="px-6 py-3">Layanan</th>
+                <th class="px-6 py-3">Berat</th>
+                <th class="px-6 py-3">Total</th>
+                <th class="px-6 py-3">Status</th>
+                <th class="px-6 py-3">Tanggal</th>
+                <th class="px-6 py-3">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr
+                th:each="transaksi, iterStat : ${transaksiTerbaru}"
+                class="hover:bg-blue-50 transition"
+                th:attr="data-status=${transaksi.status}"
+              >
+                <td class="px-6 py-4" th:text="${iterStat.index + 1}">1</td>
+                <td class="px-6 py-4" th:text="${transaksi.namaPelanggan}">
+                  Pelanggan
+                </td>
+                <td class="px-6 py-4" th:text="${transaksi.layananNama}">
+                  Layanan
+                </td>
+                <td class="px-6 py-4" th:text="${transaksi.beratKg}">0</td>
+                <td
+                  class="px-6 py-4"
+                  th:text="${transaksi.totalFormatted ?: 'Rp 0'}"
+                >
+                  Rp 0
+                </td>
+                <td class="px-6 py-4">
+                  <span
+                    class="inline-block px-2 py-1 rounded-full text-xs font-semibold bg-yellow-200 text-yellow-800"
+                    th:if="${transaksi.status} == 'DITERIMA'"
+                    th:text="${transaksi.status}"
+                    >DITERIMA</span
+                  >
+
+                  <span
+                    class="inline-block px-2 py-1 rounded-full text-xs font-semibold bg-cyan-200 text-cyan-800"
+                    th:if="${transaksi.status} == 'DICUCI'"
+                    th:text="${transaksi.status}"
+                    >DICUCI</span
+                  >
+
+                  <span
+                    class="inline-block px-2 py-1 rounded-full text-xs font-semibold bg-green-200 text-green-800"
+                    th:if="${transaksi.status} == 'SELESAI'"
+                    th:text="${transaksi.status}"
+                    >SELESAI</span
+                  >
+
+                  <span
+                    class="inline-block px-2 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-800"
+                    th:if="${transaksi.status != 'DITERIMA' and transaksi.status != 'DICUCI' and transaksi.status != 'SELESAI'}"
+                    th:text="${transaksi.status}"
+                    >-</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4"
+                  th:text="${transaksi.tanggalTransaksiFormatted ?: '-'}"
+                >
+                  -
+                </td>
+                <td class="px-6 py-4">
+                  <a
+                    th:href="@{'/kasir/transaksi/' + ${transaksi.id}}"
+                    class="text-blue-600 hover:underline font-medium"
+                    >Detail</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script th:replace="kasir/layout :: scripts"></script>
+
+    <!-- Filter Script -->
+    <script>
+      const statusFilter = document.getElementById("statusFilter");
+      const rows = document.querySelectorAll("#transaksiTable tbody tr");
+
+      statusFilter.addEventListener("change", () => {
+        const selectedStatus = statusFilter.value;
+        rows.forEach((row) => {
+          const status = row.getAttribute("data-status");
+          row.style.display =
+            !selectedStatus || status === selectedStatus ? "" : "none";
+        });
+      });
+    </script>
+
+    <script th:inline="javascript">
+      // Ambil data pemasukan per jam dari model Thymeleaf
+      const pemasukanPerJam = /*[[${pemasukanPerJam}]]*/ {};
+
+      // Buat array jam (0-23) dan data pemasukan per jam
+      const jamLabels = [];
+      const pemasukanData = [];
+
+      for (let i = 0; i < 24; i++) {
+        jamLabels.push(i + ":00");
+        pemasukanData.push(pemasukanPerJam[i] || 0);
+      }
+
+      var chartDom = document.getElementById("pemasukanChart");
+      var myChart = echarts.init(chartDom);
+
+      var option = {
+        title: {
+          text: "Total Pemasukan Hari Ini",
+          left: "center",
+        },
+        tooltip: {
+          trigger: "axis",
+          formatter: function (params) {
+            let p = params[0];
+            return `${p.axisValue}<br/>Pemasukan: Rp ${p.data}`;
+          },
+        },
+        xAxis: {
+          type: "category",
+          data: jamLabels,
+        },
+        yAxis: {
+          type: "value",
+          axisLabel: {
+            formatter: "Rp {value}",
+          },
+          splitLine: {
+            show: false, // ini untuk hilangkan garis vertikal
+          },
+        },
+        series: [
+          {
+            data: pemasukanData,
+            type: "line",
+            smooth: true,
+            lineStyle: {
+              color: "#2196F3", // contoh warna biru
+            },
+            areaStyle: {
+              color: "#2196F3", // contoh warna biru
+            },
+          },
+        ],
+      };
+
+      myChart.setOption(option);
+    </script>
+  </body>
+</html>

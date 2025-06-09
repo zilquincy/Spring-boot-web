@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="kasir/layout :: head"></head>
+  <body>
+    <nav th:replace="kasir/layout :: navbar"></nav>
+    <aside th:replace="kasir/layout :: sidebar"></aside>
+    <div class="p-4 sm:ml-64">
+      <div
+        class="p-4 border-2 border-gray-200 border-dashed rounded-lg mt-14 space-y-5"
+      >
+        <h1 class="text-3xl font-bold text-blue-600">Daftar Reservasi</h1>
+
+        <!-- Search & Create Button -->
+        <div class="flex justify-between items-center space-x-4 mb-6">
+          <form
+            class="flex items-center max-w-sm"
+            method="get"
+            th:action="@{/kasir/reservasi/list}"
+          >
+            <label for="search" class="sr-only">Search</label>
+            <div class="relative w-full">
+              <input
+                type="text"
+                id="search"
+                name="keyword"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-5 pe-16 p-2.5"
+                placeholder="Cari Reservasi..."
+                th:value="${keyword}"
+              />
+            </div>
+            <button
+              type="submit"
+              class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 20 20">
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+            </button>
+          </form>
+
+          <a
+            th:href="@{/kasir/reservasi/create}"
+            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            + Buat Reservasi Baru
+          </a>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto bg-white shadow-md rounded-md">
+          <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <thead class="bg-blue-50 text-gray-700 text-left">
+              <tr>
+                <th class="px-6 py-3">No</th>
+                <th class="px-6 py-3">Nama Pelanggan</th>
+                <th class="px-6 py-3">Tanggal Reservasi</th>
+                <th class="px-6 py-3">Layanan</th>
+                <th class="px-6 py-3">Status</th>
+                <th class="px-6 py-3">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 bg-white">
+              <tr
+                th:each="reservasi, stat : ${reservasiPage.content}"
+                class="hover:bg-blue-50 transition"
+              >
+                <td
+                  class="px-6 py-4"
+                  th:text="${stat.index + 1 + (reservasiPage.number * reservasiPage.size)}"
+                >
+                  No
+                </td>
+                <td class="px-6 py-4" th:text="${reservasi.nama}">
+                  Nama Pelanggan
+                </td>
+                <td
+                  class="px-6 py-4"
+                  th:text="${reservasi.tanggalReservasiFormatted}"
+                >
+                  Tanggal
+                </td>
+                <td class="px-6 py-4" th:text="${reservasi.namaLayanan}">
+                  Layanan
+                </td>
+                <td class="px-6 py-4" th:text="${reservasi.status}">Status</td>
+                <td class="px-6 py-4 space-y-2">
+                  <a
+                    th:href="@{'/kasir/reservasi/detail/' + ${reservasi.id}}"
+                    class="text-blue-600 hover:underline font-medium block"
+                  >
+                    Detail
+                  </a>
+
+                  <form
+                    th:action="@{/kasir/reservasi/{id}/status(id=${reservasi.id})}"
+                    method="post"
+                    class="flex space-x-2 items-center"
+                  >
+                    <select
+                      name="status"
+                      class="form-select border rounded px-2 py-1 text-sm"
+                    >
+                      <option value="MENUNGGU">MENUNGGU</option>
+                      <option value="DIJEMPUT">DIJEMPUT</option>
+                      <option value="DIPROSES">DIPROSES</option>
+                      <option value="SELESAI">SELESAI</option>
+                      <option value="DIBATALKAN">DIBATALKAN</option>
+                    </select>
+                    <button
+                      type="submit"
+                      class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition text-sm"
+                    >
+                      Update
+                    </button>
+                  </form>
+
+                  <a
+                    th:if="${reservasi.status == 'SELESAI'}"
+                    th:href="@{'/kasir/transaksi/from-reservasi/' + ${reservasi.id}}"
+                    class="inline-block bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition text-sm"
+                  >
+                    Buat Transaksi
+                  </a>
+                </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(reservasiPage.content)}">
+                <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                  Belum ada reservasi.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-4 flex justify-center">
+          <nav class="inline-flex space-x-2" aria-label="Pagination">
+            <a
+              th:href="@{/kasir/reservasi/list(page=${currentPage - 1}, keyword=${keyword})}"
+              th:classappend="${currentPage == 0} ? 'pointer-events-none opacity-50' : ''"
+              class="relative inline-flex items-center px-3 py-1 text-md font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+            >
+              Previous
+            </a>
+
+            <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+              <a
+                th:href="@{/kasir/reservasi/list(page=${i}, keyword=${keyword})}"
+                th:classappend="${i == currentPage} ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'"
+                class="relative inline-flex items-center px-3 py-1 rounded-lg border border-gray-300 text-md font-medium"
+              >
+                <span th:text="${i + 1}">1</span>
+              </a>
+            </th:block>
+
+            <a
+              th:href="@{/kasir/reservasi/list(page=${currentPage + 1}, keyword=${keyword})}"
+              th:classappend="${currentPage == totalPages - 1} ? 'pointer-events-none opacity-50' : ''"
+              class="relative inline-flex items-center px-3 py-1 text-md font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+            >
+              Next
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <script th:replace="kasir/layout :: scripts"></script>
+  </body>
+</html>
