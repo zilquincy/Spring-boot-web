@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Tentang Kami</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">🚗 Car Rental</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cars">Mobil</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <h1 class="display-4 text-center text-primary" th:text="${title}">Tentang Kami</h1>
+                
+                <div class="mt-4">
+                    <p class="lead">Car Rental System adalah platform modern untuk layanan rental mobil yang memberikan kemudahan dalam menyewa kendaraan berkualitas.</p>
+                    
+                    <h3>Visi Kami</h3>
+                    <p>Menjadi penyedia layanan rental mobil terdepan yang memberikan pengalaman terbaik bagi pelanggan dengan armada berkualitas dan pelayanan prima.</p>
+                    
+                    <h3>Misi Kami</h3>
+                    <ul>
+                        <li>Menyediakan armada mobil yang terawat dan berkualitas tinggi</li>
+                        <li>Memberikan pelayanan yang ramah dan profesional</li>
+                        <li>Menawarkan harga yang kompetitif dan transparan</li>
+                        <li>Memastikan kepuasan dan keamanan pelanggan</li>
+                    </ul>
+                    
+                    <div class="text-center mt-5">
+                        <a href="/" class="btn btn-primary">Kembali ke Home</a>
+                        <a href="/cars" class="btn btn-outline-primary">Lihat Mobil</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
