@@ -1,263 +1,66 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="id" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register - KlinKin</title>
-    <link rel="stylesheet" th:href="@{/style/style.css}" />
-    <link rel="stylesheet" th:href="@{/css/output.css}" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      @keyframes float {
-        0% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-20px);
-        }
-        100% {
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes slideUp {
-        0% {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .float-animation {
-        animation: float 6s ease-in-out infinite;
-      }
-
-      .slide-up {
-        animation: slideUp 0.6s ease-out;
-      }
-
-      .bg-circle:nth-child(1) {
-        animation-delay: 0s;
-      }
-      .bg-circle:nth-child(2) {
-        animation-delay: 2s;
-      }
-      .bg-circle:nth-child(3) {
-        animation-delay: 4s;
-      }
-      .bg-circle:nth-child(4) {
-        animation-delay: 1s;
-      }
-      .bg-circle:nth-child(5) {
-        animation-delay: 3s;
-      }
-      .bg-circle:nth-child(6) {
-        animation-delay: 5s;
-      }
-    </style>
+    <title>Daftar - Rentalin Rental Mobil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/style/style.css" />
+    <link rel="stylesheet" href="/css/output.css" />
   </head>
-  <body
-    class="min-h-screen bg-white font-sans flex items-center justify-center relative overflow-hidden"
-  >
-    <!-- Background bubbles -->
-    <div
-      class="bg-circle absolute w-12 h-12 top-[10%] left-[10%] float-animation"
-    >
-      <img
-        th:src="@{/img/bubble3.png}"
-        alt=""
-        class="w-full h-full object-contain"
-      />
-    </div>
-    <div
-      class="bg-circle absolute w-16 h-16 top-[20%] right-[10%] float-animation"
-    >
-      <img
-        th:src="@{/img/bubble3.png}"
-        alt=""
-        class="w-full h-full object-contain"
-      />
-    </div>
-    <div
-      class="bg-circle absolute w-14 h-14 bottom-[20%] left-[15%] float-animation"
-    >
-      <img
-        th:src="@{/img/bubble3.png}"
-        alt=""
-        class="w-full h-full object-contain"
-      />
-    </div>
-    <div
-      class="bg-circle absolute w-14 h-14 bottom-[10%] right-[20%] float-animation"
-    >
-      <img
-        th:src="@{/img/bubble3.png}"
-        alt=""
-        class="w-full h-full object-contain"
-      />
-    </div>
-    <div
-      class="bg-circle absolute w-10 h-10 top-[50%] left-[5%] float-animation"
-    >
-      <img
-        th:src="@{/img/bubble3.png}"
-        alt=""
-        class="w-full h-full object-contain"
-      />
-    </div>
-    <div
-      class="bg-circle absolute w-16 h-16 top-[70%] right-[5%] float-animation"
-    >
-      <img
-        th:src="@{/img/bubble3.png}"
-        alt=""
-        class="w-full h-full object-contain"
-      />
-    </div>
-
-    <!-- Register Card -->
-    <div
-      class="register-container bg-white backdrop-blur-xl rounded-3xl p-8 shadow-md border border-gray-100 w-full max-w-xl relative z-10 md:my-20"
-    >
-      <div class="w-16 h-16 rounded-2xl mx-auto mb-5">
-        <img
-          th:src="@{/img/logo2.png}"
-          alt="KlinKin Logo"
-          class="w-full h-full object-contain"
-        />
+  <body class="font-sans bg-gradient-to-bl from-blue-50 to-white min-h-screen flex items-center justify-center px-6 py-12">
+    <div class="relative max-w-2xl w-full bg-white/90 backdrop-blur-lg rounded-3xl shadow-xl p-20 md:p-20 lg:p-14 border border-blue-100">
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Buat Akun Rentalin</h2>
+        <p class="text-gray-600 text-sm">Daftar untuk mulai menyewa mobil</p>
       </div>
-
-      <h1 class="text-center text-xl font-semibold text-gray-800 mb-2">
-        Buat Akun Baru
-      </h1>
-
-      <div
-        th:if="${error}"
-        class="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-5 border-l-4 border-red-500"
-        th:text="${error}"
-      ></div>
-
-      <form th:action="@{/auth/register}" method="post" th:object="${userDTO}">
-        <!-- Grid container untuk 2-2-1 layout -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-          <!-- Email -->
+      <form method="post" action="/auth/register" class="space-y-6 px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label
-              for="email"
-              class="block text-gray-700 text-sm font-medium mb-2"
-              >Email</label
-            >
-            <input
-              type="email"
-              id="email"
-              th:field="*{email}"
-              placeholder="Masukkan email Anda"
-              required
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
-            />
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Masukkan email Anda"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white/80 transition" />
           </div>
-
-          <!-- Username -->
           <div>
-            <label
-              for="username"
-              class="block text-gray-700 text-sm font-medium mb-2"
-              >Username</label
-            >
-            <input
-              type="text"
-              id="username"
-              th:field="*{username}"
-              placeholder="Masukkan username"
-              required
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
-            />
+            <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+            <input type="text" id="username" name="username" required placeholder="Pilih username"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white/80 transition" />
           </div>
-
-          <!-- Full Name -->
           <div>
-            <label
-              for="fullName"
-              class="block text-gray-700 text-sm font-medium mb-2"
-              >Nama Lengkap</label
-            >
-            <input
-              type="text"
-              id="fullName"
-              th:field="*{fullName}"
-              placeholder="Masukkan nama lengkap"
-              required
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
-            />
+            <label for="fullName" class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
+            <input type="text" id="fullName" name="fullName" required placeholder="Masukkan nama lengkap"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white/80 transition" />
           </div>
-
-          <!-- Password -->
           <div>
-            <label
-              for="password"
-              class="block text-gray-700 text-sm font-medium mb-2"
-              >Password</label
-            >
+            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
             <div class="relative">
-              <input
-                type="password"
-                id="password"
-                th:field="*{password}"
-                placeholder="Masukkan password"
-                required
-                class="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl text-sm bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
-              />
-              <button
-                type="button"
-                onclick="togglePassword()"
-                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 text-lg"
-              >
+              <input type="password" id="password" name="password" required placeholder="Masukkan password"
+                class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-white/80 transition" />
+              <button type="button" onclick="togglePassword()"
+                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
                 👁
               </button>
             </div>
           </div>
         </div>
-
-        <!-- Role (1 kolom penuh) -->
-        <div class="mb-6">
-          <label for="role" class="block text-gray-700 text-sm font-medium mb-2"
-            >Role</label
-          >
-          <select
-            id="role"
-            th:field="*{role}"
-            required
-            class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
-          >
+        <div>
+          <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+          <select id="role" name="role" required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white/80 transition">
             <option value="">Pilih Role</option>
-            <option th:value="ADMIN">Admin</option>
-            <option th:value="KASIR">Kasir</option>
-            <option th:value="PELANGGAN">Pelanggan</option>
+            <option value="ADMIN">Admin</option>
+            <option value="KASIR">Kasir</option>
+            <option value="PELANGGAN">Pelanggan</option>
           </select>
         </div>
-
-        <!-- Submit Button -->
-        <button
-          type="submit"
-          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl text-base font-semibold"
-        >
-          Daftar
-        </button>
+        <button type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition">Daftar</button>
       </form>
-
-      <div class="text-center mt-5 text-gray-600 text-sm">
+      <div class="text-center mt-6 text-sm text-gray-600">
         Sudah punya akun?
-        <a
-          th:href="@{/auth/login}"
-          class="text-blue-500 font-semibold hover:underline"
-          >Masuk sekarang</a
-        >
+        <a href="/auth/login" class="text-blue-600 hover:underline font-medium">Masuk sekarang</a>
       </div>
     </div>
 
