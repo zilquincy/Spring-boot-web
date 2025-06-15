@@ -109,4 +109,8 @@ public class UserService {
         return userPage.map(MapperUtil::toDTO);
     }
 
+    // Tambahkan metode ini di kelas UserService
+    public int countByRole(User.Role role) {
+        return userRepository.findByRole(role).size();
+    }
 }

@@ -69,4 +69,8 @@ public class LayananService {
         return result.map(MapperUtil::toDTO);
     }
 
+    // Tambahkan metode ini di kelas LayananService
+    public int countAll() {
+        return layananRepository.findAllByDeletedAtIsNull().size();
+    }
 }

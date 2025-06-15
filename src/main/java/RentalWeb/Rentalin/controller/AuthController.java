@@ -57,6 +57,9 @@ public class AuthController {
             model.addAttribute("error", "Email sudah digunakan.");
             return "auth/register";
         }
+        
+        // Set default role sebagai PELANGGAN
+        userDTO.setRole(User.Role.PELANGGAN);
 
         userService.save(userDTO);
         return "redirect:/auth/login?registerSuccess";

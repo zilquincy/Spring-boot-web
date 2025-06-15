@@ -26,6 +26,6 @@ public class UserDTO {
     @NotBlank(message = "Full name tidak boleh kosong")
     private String fullName;
 
-    @NotNull(message = "Role wajib diisi")
     private User.Role role;
+
 }
